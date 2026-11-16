@@ -1,0 +1,549 @@
+{
+  "name": "smoke",
+  "tests": [
+    {
+      "name": "the home page loads with its hero, featured film area and region tiles",
+      "steps": [
+        {
+          "goto": "/"
+        },
+        {
+          "expect_status": 200
+        },
+        {
+          "expect_no_console_errors": true
+        },
+        {
+          "expect_visible": "[data-region=\"header\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"hero\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"start-journey\"]"
+        },
+        {
+          "expect_visible": "#featured"
+        },
+        {
+          "expect_visible": "[data-testid=\"region-africa\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"region-poles\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"footer\"]"
+        }
+      ]
+    },
+    {
+      "name": "the 'Start the journey' button jumps down to the featured film",
+      "steps": [
+        {
+          "goto": "/"
+        },
+        {
+          "click": "[data-testid=\"start-journey\"]"
+        },
+        {
+          "expect_url_contains": "#featured"
+        },
+        {
+          "expect_visible": "#featured"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "a region tile on the home page opens that region in Destinations",
+      "steps": [
+        {
+          "goto": "/"
+        },
+        {
+          "click": "[data-testid=\"region-europe\"]"
+        },
+        {
+          "expect_url_contains": "/destinations#europe"
+        },
+        {
+          "expect_visible": "#europe"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "the header menu links and logo take you to each page",
+      "steps": [
+        {
+          "goto": "/"
+        },
+        {
+          "click": "[data-testid=\"nav-destinations\"]"
+        },
+        {
+          "expect_url_contains": "/destinations"
+        },
+        {
+          "wait_for": "#africa"
+        },
+        {
+          "click": "[data-testid=\"nav-films\"]"
+        },
+        {
+          "expect_url_contains": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"search-films\"]"
+        },
+        {
+          "click": "[data-testid=\"nav-about\"]"
+        },
+        {
+          "expect_url_contains": "/about"
+        },
+        {
+          "wait_for": "[data-testid=\"about-destinations\"]"
+        },
+        {
+          "click": "[data-testid=\"nav-home\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"start-journey\"]"
+        },
+        {
+          "click": "[data-testid=\"nav-about\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"about-destinations\"]"
+        },
+        {
+          "click": "[data-testid=\"home-logo\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"start-journey\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "the Destinations page lists all six regions with a jump bar",
+      "steps": [
+        {
+          "goto": "/destinations"
+        },
+        {
+          "expect_status": 200
+        },
+        {
+          "expect_no_console_errors": true
+        },
+        {
+          "expect_visible": "[data-region=\"intro\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"jump-africa\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"jump-poles\"]"
+        },
+        {
+          "expect_visible": "#africa"
+        },
+        {
+          "expect_visible": "#americas"
+        },
+        {
+          "expect_visible": "#asia"
+        },
+        {
+          "expect_visible": "#europe"
+        },
+        {
+          "expect_visible": "#oceania"
+        },
+        {
+          "expect_visible": "#poles"
+        }
+      ]
+    },
+    {
+      "name": "the region jump bar on Destinations moves to the chosen region",
+      "steps": [
+        {
+          "goto": "/destinations"
+        },
+        {
+          "click": "[data-testid=\"jump-oceania\"]"
+        },
+        {
+          "expect_url_contains": "#oceania"
+        },
+        {
+          "expect_visible": "#oceania"
+        },
+        {
+          "click": "[data-testid=\"jump-asia\"]"
+        },
+        {
+          "expect_url_contains": "#asia"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "a country with no films says so and 'All countries' clears the filter",
+      "steps": [
+        {
+          "goto": "/destinations?country=Atlantis"
+        },
+        {
+          "expect_status": 200
+        },
+        {
+          "wait_for": "[data-testid=\"empty-all-films\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"results\"]"
+        },
+        {
+          "click": "[data-testid=\"clear-country\"]"
+        },
+        {
+          "expect_not_visible": "[data-region=\"results\"]"
+        },
+        {
+          "expect_visible": "#africa"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "'See all films' from an empty country goes to Travel Films",
+      "steps": [
+        {
+          "goto": "/destinations?country=Atlantis"
+        },
+        {
+          "wait_for": "[data-testid=\"empty-all-films\"]"
+        },
+        {
+          "click": "[data-testid=\"empty-all-films\"]"
+        },
+        {
+          "expect_url_contains": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"search-films\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "the Travel Films page loads with search and sort controls",
+      "steps": [
+        {
+          "goto": "/films"
+        },
+        {
+          "expect_status": 200
+        },
+        {
+          "expect_no_console_errors": true
+        },
+        {
+          "expect_visible": "[data-testid=\"search-films\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"sort-newest\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"sort-popular\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"grid\"]"
+        }
+      ]
+    },
+    {
+      "name": "switching Travel Films to 'Most watched' and back reorders without errors",
+      "steps": [
+        {
+          "goto": "/films"
+        },
+        {
+          "click": "[data-testid=\"sort-popular\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"sort-popular\"][aria-pressed=\"true\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"grid\"]"
+        },
+        {
+          "click": "[data-testid=\"sort-newest\"]"
+        },
+        {
+          "expect_visible": "[data-testid=\"sort-newest\"][aria-pressed=\"true\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "searching films for something that doesn't exist shows the no-match message, and 'Show all films' brings the list back",
+      "steps": [
+        {
+          "login_as": "member"
+        },
+        {
+          "seed": "ready_upload"
+        },
+        {
+          "goto": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"open-film\"]"
+        },
+        {
+          "fill": {
+            "selector": "[data-testid=\"search-films\"]",
+            "value": "zzzznope"
+          }
+        },
+        {
+          "press": {
+            "selector": "[data-testid=\"search-films\"]",
+            "key": "Enter"
+          }
+        },
+        {
+          "expect_url_contains": "/films"
+        },
+        {
+          "wait_for": "[data-region=\"empty\"]"
+        },
+        {
+          "expect_text": {
+            "selector": "[data-region=\"empty\"]",
+            "contains": "No films match"
+          }
+        },
+        {
+          "click": "[data-testid=\"clear-search\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"open-film\"]"
+        },
+        {
+          "expect_not_visible": "[data-region=\"empty\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "opening a film from Travel Films plays it on the watch page",
+      "steps": [
+        {
+          "login_as": "member"
+        },
+        {
+          "seed": "ready_upload"
+        },
+        {
+          "goto": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"open-film\"]"
+        },
+        {
+          "click": "[data-testid=\"open-film\"]"
+        },
+        {
+          "expect_url_contains": "/watch?id="
+        },
+        {
+          "wait_for": "[data-region=\"details\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"player\"]"
+        },
+        {
+          "expect_visible": "#player_container"
+        },
+        {
+          "expect_visible": "[data-testid=\"back-to-films\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "the 'back to Travel Films' link on a film returns to the film list",
+      "steps": [
+        {
+          "login_as": "member"
+        },
+        {
+          "seed": "ready_upload"
+        },
+        {
+          "goto": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"open-film\"]"
+        },
+        {
+          "click": "[data-testid=\"open-film\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"back-to-films\"]"
+        },
+        {
+          "click": "[data-testid=\"back-to-films\"]"
+        },
+        {
+          "expect_url_contains": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"search-films\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "films not matched to a country are linked from Destinations to Travel Films",
+      "steps": [
+        {
+          "login_as": "member"
+        },
+        {
+          "seed": "ready_upload"
+        },
+        {
+          "goto": "/destinations"
+        },
+        {
+          "wait_for": "[data-testid=\"unplaced-films\"]"
+        },
+        {
+          "click": "[data-testid=\"unplaced-films\"]"
+        },
+        {
+          "expect_url_contains": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"open-film\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "the watch page with no film chosen offers a way back to the films",
+      "steps": [
+        {
+          "goto": "/watch"
+        },
+        {
+          "expect_status": 200
+        },
+        {
+          "expect_no_console_errors": true
+        },
+        {
+          "expect_visible": "[data-region=\"player\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"watch-back-films\"]"
+        },
+        {
+          "click": "[data-testid=\"watch-back-films\"]"
+        },
+        {
+          "expect_url_contains": "/films"
+        },
+        {
+          "wait_for": "[data-testid=\"search-films\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "the About page loads and 'Open the atlas' goes to Destinations",
+      "steps": [
+        {
+          "goto": "/about"
+        },
+        {
+          "expect_status": 200
+        },
+        {
+          "expect_no_console_errors": true
+        },
+        {
+          "expect_visible": "[data-region=\"hero\"]"
+        },
+        {
+          "expect_visible": "[data-region=\"body\"]"
+        },
+        {
+          "click": "[data-testid=\"about-destinations\"]"
+        },
+        {
+          "expect_url_contains": "/destinations"
+        },
+        {
+          "wait_for": "#africa"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    },
+    {
+      "name": "a broken link shows the 'off the map' page with a way back home",
+      "steps": [
+        {
+          "goto": "/no-such-trail"
+        },
+        {
+          "wait_for": "[data-testid=\"back-home\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        },
+        {
+          "click": "[data-testid=\"back-home\"]"
+        },
+        {
+          "wait_for": "[data-testid=\"start-journey\"]"
+        },
+        {
+          "expect_no_console_errors": true
+        }
+      ]
+    }
+  ]
+}
